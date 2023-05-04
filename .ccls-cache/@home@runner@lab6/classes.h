@@ -171,6 +171,7 @@ public:
       ptr = ptr->next;
       i++;
     }
+    return ptr;
   }
 
   PeopleData *operator[](unsigned index) { return getAt(index); }
@@ -236,10 +237,10 @@ public:
     delete ptr;
   }
 
-  bool isExist(int elementnum, string data) {
+  int isExist(int elementnum, string data) {
 
     PeopleData *ptr = this->head;
-
+    int index = 0;
     string element;
     while (ptr != NULL) {
 
@@ -263,26 +264,28 @@ public:
         }
       } else {
         if (ptr->lastname == data)
-          return true;
+          return index;
         if (ptr->name == data)
-          return true;
+          return index;
         if (ptr->patronymic == data)
-          return true;
+          return index;
         if (ptr->post == data)
-          return true;
+          return index;
         if (ptr->address == data)
-          return true;
+          return index;
       }
 
       if (element == data)
-        return true;
+        return index;
       ptr = ptr->next;
+      index++;
     }
-    return false;
+    return -1;
   }
 
-  bool isExistData(string data) {
+  int isExistData(string data) {
     data += '\n';
+    int index = 0;
     PeopleData *ptr = this->head;
     bool exist = true;
     while (ptr != NULL) {
@@ -313,9 +316,8 @@ public:
             if (buf != ptr->address)
               exist = false;
             break;
-            
           }
-          cout<<buf<<'\n';
+          cout << buf << '\n';
           buf = "";
           iter++;
         }
@@ -325,13 +327,16 @@ public:
         return true;
       } else {
         ptr = ptr->next;
+        index++;
         exist = true;
       }
     }
-    return false;
+    return -1;
   }
-  bool isExistData(string lastname, string name, string patronymic, string post,
-                   string address) {
+
+  int isExistData(string lastname, string name, string patronymic, string post,
+                  string address) {
+    int index = 0;
     PeopleData *ptr = this->head;
     bool exist = true;
     while (ptr != NULL) {
@@ -346,12 +351,63 @@ public:
       if (ptr->address != address)
         exist = false;
       if (exist) {
-        return true;
+        return index;
       } else {
         ptr = ptr->next;
+        index++;
         exist = true;
       }
     }
-    return false;
+    return -1;
+  }
+
+  void castling(int first, int second) {
+    
+    if(first == second) return;
+    if(first == -1) return;
+    if(second == -1) return;
+    if(first>second){
+      int buf = first;
+      first = second;
+      second = first;
+    }
+    
+    PeopleData *ptr_1 = getAt(first);
+    PeopleData *ptr_2 = getAt(second);
+    if(second == first+1){
+      
+      PeopleData *ptr_1l = ptr_1->prev;
+      PeopleData *ptr_2r = ptr_2->next;
+      
+      ptr_1->prev = ptr_2;
+      ptr_1->next = ptr_2r;
+
+      ptr_2->next = ptr_1;
+      ptr_2->prev = ptr_1l;
+      
+      ptr_1l->next = ptr_2;
+      ptr_2r->prev = ptr_1;
+      
+    }else{
+    PeopleData *ptr_1l = ptr_1->prev;
+    PeopleData *ptr_1r = ptr_1->next;
+    PeopleData *ptr_2l = ptr_2->prev;
+    PeopleData *ptr_2r = ptr_2->next;
+      
+    ptr_1->next = ptr_2r;
+    ptr_1->prev = ptr_2l;
+
+    ptr_2->next = ptr_1r;
+    ptr_2->prev = ptr_1l;
+
+    ptr_1l->next = ptr_2;
+    ptr_1r->prev = ptr_2;
+
+    ptr_2l->next = ptr_1;
+    ptr_2r->prev = ptr_1;
+    }
+    cout << "\n";
+    
+    
   }
 };

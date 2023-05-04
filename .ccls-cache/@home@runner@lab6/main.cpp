@@ -22,12 +22,30 @@ int main() {
     if (enter != "")
       lst.push_back(enter);
   } while (enter != "");
+
+  PeopleData *ptr = lst.head;
+    while(ptr!=NULL){
+    cout<<ptr->lastname<<' '<<ptr->name<<' '<<ptr->patronymic<<", "<<ptr->post<<", "      <<ptr->address<<'\n';
+    ptr = ptr->next;
+  }
   
   cout << "\n";
-  if(lst.isExistData("Фролов","Антон","Данилович","кузнец","спуск Космонавтов, 81")){
+  if (lst.isExistData("Фролов", "Антон", "Данилович", "кузнец",
+                      "спуск Космонавтов, 81")!=-1) {
     cout << "Exist";
-  }else{
+  } else {
     cout << "No Exist";
   }
+  cout << "\n";
+  
+  lst.castling(4,5);
+  
+  cout << "\n";
+  ptr = lst.head;
+  while(ptr!=NULL){
+    cout<<ptr->lastname<<' '<<ptr->name<<' '<<ptr->patronymic<<", "<<ptr->post<<", "      <<ptr->address<<'\n';
+    ptr = ptr->next;
+  }
+    
   return 0;
 }

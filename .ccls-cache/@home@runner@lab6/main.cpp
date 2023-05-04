@@ -7,6 +7,7 @@ using std::cin;
 using std::string;
 
 int main() {
+
   PeopleLinkedList lst;
   string enter;
   string file;
@@ -15,16 +16,18 @@ int main() {
 
   getline(cin, file);
 
-  if (file == "")
-    file = "list.txt";
   std::ifstream fin(file);
   do {
     getline(fin, enter);
     if (enter != "")
       lst.push_back(enter);
   } while (enter != "");
-
-  cout << "\n\n";
-
+  
+  cout << "\n";
+  if(lst.isExistData("Фролов","Антон","Данилович","кузнец","спуск Космонавтов, 81")){
+    cout << "Exist";
+  }else{
+    cout << "No Exist";
+  }
   return 0;
 }

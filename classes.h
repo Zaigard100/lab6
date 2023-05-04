@@ -235,4 +235,123 @@ public:
     left->next = right;
     delete ptr;
   }
+
+  bool isExist(int elementnum, string data) {
+
+    PeopleData *ptr = this->head;
+
+    string element;
+    while (ptr != NULL) {
+
+      if (elementnum != -1) {
+        switch (elementnum) {
+        case 0:
+          element = ptr->lastname;
+          break;
+        case 1:
+          element = ptr->name;
+          break;
+        case 2:
+          element = ptr->patronymic;
+          break;
+        case 3:
+          element = ptr->post;
+          break;
+        case 4:
+          element = ptr->address;
+          break;
+        }
+      } else {
+        if (ptr->lastname == data)
+          return true;
+        if (ptr->name == data)
+          return true;
+        if (ptr->patronymic == data)
+          return true;
+        if (ptr->post == data)
+          return true;
+        if (ptr->address == data)
+          return true;
+      }
+
+      if (element == data)
+        return true;
+      ptr = ptr->next;
+    }
+    return false;
+  }
+
+  bool isExistData(string data) {
+    data += '\n';
+    PeopleData *ptr = this->head;
+    bool exist = true;
+    while (ptr != NULL) {
+      unsigned iter = 0, i = 0;
+      string buf = "";
+      while (iter < 5) {
+        if (data[i] != ';' && data[i] != '\n') {
+          buf += data[i];
+        } else if (buf != "") {
+          switch (iter) {
+          case 0:
+            if (buf != ptr->lastname)
+              exist = false;
+            break;
+          case 1:
+            if (buf != ptr->name)
+              exist = false;
+            break;
+          case 2:
+            if (buf != ptr->patronymic)
+              exist = false;
+            break;
+          case 3:
+            if (buf != ptr->post)
+              exist = false;
+            break;
+          case 4:
+            if (buf != ptr->address)
+              exist = false;
+            break;
+            
+          }
+          cout<<buf<<'\n';
+          buf = "";
+          iter++;
+        }
+        i++;
+      }
+      if (exist) {
+        return true;
+      } else {
+        ptr = ptr->next;
+        exist = true;
+      }
+    }
+    return false;
+  }
+  bool isExistData(string lastname, string name, string patronymic, string post,
+                   string address) {
+    PeopleData *ptr = this->head;
+    bool exist = true;
+    while (ptr != NULL) {
+      if (ptr->lastname != lastname)
+        exist = false;
+      if (ptr->name != name)
+        exist = false;
+      if (ptr->patronymic != patronymic)
+        exist = false;
+      if (ptr->post != post)
+        exist = false;
+      if (ptr->address != address)
+        exist = false;
+      if (exist) {
+        return true;
+      } else {
+        ptr = ptr->next;
+        exist = true;
+      }
+    }
+    return false;
+  }
 };

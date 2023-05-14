@@ -1,5 +1,9 @@
+#ifndef CLASSES_H
+#define CLASSES_H
+
 #include <iostream>
 #include <string>
+#include <cstring>
 
 using std::cin;
 using std::cout;
@@ -15,9 +19,24 @@ public:
 
   PeopleData *prev, *next;
 
+  string get_data(int num){
+      if(num == 0){
+        return lastname;
+      }else if(num == 0){
+        return name;
+      }else if(num == 0){
+        return patronymic;
+      }else if(num == 0){
+        return post;
+      }else if(num == 0){
+        return address;
+      }else{
+        return "";
+      }
+    }
+
 public:
-  PeopleData(string lastname, string name, string patronymic, string post,
-             string address) {
+  PeopleData(string lastname, string name, string patronymic, string post,string address) {
     this->lastname = lastname;
     this->name = name;
     this->patronymic = patronymic;
@@ -27,6 +46,7 @@ public:
     this->prev = NULL;
     this->next = NULL;
   }
+
   PeopleData(string data) {
     data += '\n';
     unsigned iter = 0, i = 0;
@@ -69,6 +89,7 @@ public:
     this->prev = NULL;
     this->next = NULL;
   }
+
 };
 class PeopleLinkedList {
 public:
@@ -80,9 +101,7 @@ public:
     tail = NULL;
   }
   ~PeopleLinkedList() {
-    while (head != NULL) {
-      pop_front();
-    }
+    clear();
   }
   // PUSH FRONT
   PeopleData *push_front(string lastname, string name, string patronymic,
@@ -236,7 +255,12 @@ public:
     left->next = right;
     delete ptr;
   }
-
+  void clear(){
+    while (head != NULL) {
+      pop_front();
+    }
+  }
+  //FIND
   int isExist(int elementnum, string data) {
 
     PeopleData *ptr = this->head;
@@ -374,6 +398,7 @@ public:
     
     PeopleData *ptr_1 = getAt(first);
     PeopleData *ptr_2 = getAt(second);
+    if(ptr_1 == ptr_2) return;
     if(second == first+1){
       
       PeopleData *ptr_1l = ptr_1->prev;
@@ -385,8 +410,8 @@ public:
       ptr_2->next = ptr_1;
       ptr_2->prev = ptr_1l;
       
-      ptr_1l->next = ptr_2;
-      ptr_2r->prev = ptr_1;
+      if(ptr_1l!=NULL) ptr_1l->next = ptr_2;
+      if(ptr_2r!=NULL) ptr_2r->prev = ptr_1;
       
     }else{
     PeopleData *ptr_1l = ptr_1->prev;
@@ -400,14 +425,47 @@ public:
     ptr_2->next = ptr_1r;
     ptr_2->prev = ptr_1l;
 
-    ptr_1l->next = ptr_2;
-    ptr_1r->prev = ptr_2;
+    if(ptr_1l!=NULL) ptr_1l->next = ptr_2;
+    if(ptr_1r!=NULL) ptr_1r->prev = ptr_2;
 
-    ptr_2l->next = ptr_1;
-    ptr_2r->prev = ptr_1;
+    if(ptr_2l!=NULL) ptr_2l->next = ptr_1;
+    if(ptr_2r!=NULL) ptr_2r->prev = ptr_1;
     }
-    cout << "\n";
-    
-    
   }
+
+  void sort(int elementnum){
+    PeopleData *ptr = this->head;
+    int index = 0;
+    string element;
+    int min_el = 0;
+    int i = 0;
+    string min = "";
+    while (true) {
+      if(ptr == NULL){
+        castling(index, min_el);
+        index++;
+        i = index;
+        min_el = i;
+        min = "";
+        ptr = getAt(i);
+        if(ptr == NULL){
+          return;
+        }
+      }
+      element = ptr->get_data(elementnum);
+      if(min == ""){
+        min = element;
+      }else{
+        if(min>element){
+          min = element;
+          min_el = i;
+        }
+      }
+      i++;
+      ptr = ptr->next;
+    }
+  }
+
 };
+
+#endif //CLASSES_H

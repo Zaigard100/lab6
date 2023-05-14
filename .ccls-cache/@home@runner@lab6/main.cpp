@@ -14,7 +14,7 @@ int main() {
 
   cout << "Из какого файла читать данные:\n";
 
-  getline(cin, file);
+  file = "list.txt";
 
   std::ifstream fin(file);
   do {
@@ -38,7 +38,7 @@ int main() {
   }
   cout << "\n";
   
-  lst.castling(4,5);
+  lst.sort(0);
   
   cout << "\n";
   ptr = lst.head;
@@ -49,3 +49,4 @@ int main() {
     
   return 0;
 }
+

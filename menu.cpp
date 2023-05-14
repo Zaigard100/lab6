@@ -78,8 +78,7 @@ int menu() {
     std::ofstream fout(file);
     PeopleData *ptr = lst.head;
     while (ptr != NULL) {
-      fout << ptr->lastname << ';' << ptr->name << ';' << ptr->patronymic << ";"
-           << ptr->post << ";" << ptr->address << ';' << '\n';
+      fout << ptr->fio << ';'<< ptr->post << ';' << ptr->address << ';' << '\n';
       ptr = ptr->next;
     }
     fout.close();
@@ -154,7 +153,7 @@ int menu() {
     }
     
     while(ptr!=NULL){
-    cout<<ptr->lastname<<' '<<ptr->name<<' '<<ptr->patronymic<<", "<<ptr->post<<", "                <<ptr->address<<'\n';
+    cout<<ptr->fio<<", "<<ptr->post<<", "<<ptr->address<<'\n';
     ptr = ptr->next;
   }
 
@@ -169,7 +168,7 @@ int menu() {
     if(ptr==NULL){
       cout << "Элемент пуст.\n";
     }else{
-      cout<<ptr->lastname<<' '<<ptr->name<<' '<<ptr->patronymic<<", "<<ptr->post<<", "                <<ptr->address<<'\n';
+      cout<<ptr->fio<<", "<<ptr->post<<", "<<ptr->address<<'\n';
     }
   } else if (command == "10") {
 
@@ -178,7 +177,7 @@ int menu() {
     while (true) {
       getline(cin, enter);
       if (enter == "Y" || enter == "y") {
-        clear();
+        lst.clear();
         return -1;
         break;
       } else if (enter == "N" || enter == "n") {

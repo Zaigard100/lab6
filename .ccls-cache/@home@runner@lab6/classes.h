@@ -11,9 +11,7 @@ using std::string;
 
 class PeopleData {
 public:
-  string lastname;
-  string name;
-  string patronymic;
+  string fio;
   string post;
   string address;
 
@@ -21,14 +19,10 @@ public:
 
   string get_data(int num){
       if(num == 0){
-        return lastname;
-      }else if(num == 0){
-        return name;
-      }else if(num == 0){
-        return patronymic;
-      }else if(num == 0){
+        return fio;
+      }else if(num == 1){
         return post;
-      }else if(num == 0){
+      }else if(num == 2){
         return address;
       }else{
         return "";
@@ -36,10 +30,8 @@ public:
     }
 
 public:
-  PeopleData(string lastname, string name, string patronymic, string post,string address) {
-    this->lastname = lastname;
-    this->name = name;
-    this->patronymic = patronymic;
+  PeopleData(string fio, string post,string address) {
+    this->fio = fio;
     this->post = post;
     this->address = address;
 
@@ -51,24 +43,18 @@ public:
     data += '\n';
     unsigned iter = 0, i = 0;
     string buf = "";
-    while (iter < 5) {
+    while (iter < 3) {
       if (data[i] != ';' && data[i] != '\n') {
         buf += data[i];
       } else if (buf != "") {
         switch (iter) {
         case 0:
-          this->lastname = buf;
+          this->fio = buf;
           break;
         case 1:
-          this->name = buf;
-          break;
-        case 2:
-          this->patronymic = buf;
-          break;
-        case 3:
           this->post = buf;
           break;
-        case 4:
+        case 2:
           this->address = buf;
           break;
         }
@@ -77,7 +63,7 @@ public:
         iter++;
       }
       i++;
-      if (data[i - 1] == '\n' && iter < 5) {
+      if (data[i - 1] == '\n' && iter < 3) {
         cout << "Введено недостаточное колво данных количество данных\n";
         cout << "Повторите ввод: \n";
         getline(cin, data);
@@ -104,9 +90,8 @@ public:
     clear();
   }
   // PUSH FRONT
-  PeopleData *push_front(string lastname, string name, string patronymic,
-                         string post, string address) {
-    PeopleData *ptr = new PeopleData(lastname, name, patronymic, post, address);
+  PeopleData *push_front(string fio, string post, string address) {
+    PeopleData *ptr = new PeopleData(fio, post, address);
     ptr->next = head;
     if (head != NULL) {
       head->prev = ptr;
@@ -129,9 +114,8 @@ public:
     return ptr;
   }
   // PUSH BACK
-  PeopleData *push_back(string lastname, string name, string patronymic,
-                        string post, string address) {
-    PeopleData *ptr = new PeopleData(lastname, name, patronymic, post, address);
+  PeopleData *push_back(string fio, string post, string address) {
+    PeopleData *ptr = new PeopleData(fio, post, address);
     ptr->next = head;
     if (head != NULL) {
       head->prev = ptr;
@@ -195,18 +179,17 @@ public:
 
   PeopleData *operator[](unsigned index) { return getAt(index); }
   // SET
-  PeopleData *insert(unsigned index, string lastname, string name,
-                     string patronymic, string post, string address) {
+  PeopleData *insert(unsigned index, string fio, string post, string address) {
     PeopleData *right = getAt(index);
     PeopleData *left = getAt(index - 1);
     if (right == NULL) {
-      return push_back(lastname, name, patronymic, post, address);
+      return push_back(fio, post, address);
     }
     if (left == NULL) {
-      return push_front(lastname, name, patronymic, post, address);
+      return push_front(fio, post, address);
     }
 
-    PeopleData *ptr = new PeopleData(lastname, name, patronymic, post, address);
+    PeopleData *ptr = new PeopleData(fio, post, address);
 
     ptr->prev = left;
     ptr->next = right;
@@ -271,27 +254,17 @@ public:
       if (elementnum != -1) {
         switch (elementnum) {
         case 0:
-          element = ptr->lastname;
+          element = ptr->fio;
           break;
         case 1:
-          element = ptr->name;
-          break;
-        case 2:
-          element = ptr->patronymic;
-          break;
-        case 3:
           element = ptr->post;
           break;
-        case 4:
+        case 2:
           element = ptr->address;
           break;
         }
       } else {
-        if (ptr->lastname == data)
-          return index;
-        if (ptr->name == data)
-          return index;
-        if (ptr->patronymic == data)
+        if (ptr->fio == data)
           return index;
         if (ptr->post == data)
           return index;
@@ -321,22 +294,14 @@ public:
         } else if (buf != "") {
           switch (iter) {
           case 0:
-            if (buf != ptr->lastname)
+            if (buf != ptr->fio)
               exist = false;
-            break;
+            break;    
           case 1:
-            if (buf != ptr->name)
-              exist = false;
-            break;
-          case 2:
-            if (buf != ptr->patronymic)
-              exist = false;
-            break;
-          case 3:
             if (buf != ptr->post)
               exist = false;
             break;
-          case 4:
+          case 2:
             if (buf != ptr->address)
               exist = false;
             break;
@@ -358,17 +323,13 @@ public:
     return -1;
   }
 
-  int isExistData(string lastname, string name, string patronymic, string post,
+  int isExistData(string fio, string post,
                   string address) {
     int index = 0;
     PeopleData *ptr = this->head;
     bool exist = true;
     while (ptr != NULL) {
-      if (ptr->lastname != lastname)
-        exist = false;
-      if (ptr->name != name)
-        exist = false;
-      if (ptr->patronymic != patronymic)
+      if (ptr->fio != fio)
         exist = false;
       if (ptr->post != post)
         exist = false;
@@ -390,6 +351,7 @@ public:
     if(first == second) return;
     if(first == -1) return;
     if(second == -1) return;
+    
     if(first>second){
       int buf = first;
       first = second;
@@ -398,6 +360,8 @@ public:
     
     PeopleData *ptr_1 = getAt(first);
     PeopleData *ptr_2 = getAt(second);
+    if(tail == ptr_2) tail = ptr_1; 
+    if(head == ptr_1) head = ptr_2;
     if(ptr_1 == ptr_2) return;
     if(second == first+1){
       

@@ -26,18 +26,18 @@ int uint_read(string data) {
 }
 
 int menu() {
-  cout<< "1. Загрузить из файла.\n"
-      << "2. Записать в файл.\n"
-      << "3. Заполнить через консоль.\n"
-      << "4. Очистить список\n"
-      << "5. Добавить элемент в список.\n"
-      << "6. Удалить элемент из списка.\n"
-      << "7. Сортировать список.\n"
-      << "8. Вывести список в консоль.\n"
-      << "9. Вывести элемен в консоль.\n"
-      << "10.Закрыть программу\n\n"
-      << "Введите номер комманды:\n";
-  
+  cout << "1. Загрузить из файла.\n"
+       << "2. Записать в файл.\n"
+       << "3. Заполнить через консоль.\n"
+       << "4. Очистить список\n"
+       << "5. Добавить элемент в список.\n"
+       << "6. Удалить элемент из списка.\n"
+       << "7. Сортировать список.\n"
+       << "8. Вывести список в консоль.\n"
+       << "9. Вывести элемен в консоль.\n"
+       << "10.Закрыть программу\n\n"
+       << "Введите номер комманды:\n";
+
   string command;
   getline(cin, command);
   cout << "\n";
@@ -47,20 +47,20 @@ int menu() {
     string file, enter;
     getline(cin, file);
     std::ifstream fin(file);
-    if(lst.head != NULL){
+    if (lst.head != NULL) {
       cout << "Список не пуст хотите её отчистить(Y/N):\n";
       while (true) {
-      getline(cin, enter);
-      if (enter == "Y" || enter == "y") {
-        lst.clear();
+        getline(cin, enter);
+        if (enter == "Y" || enter == "y") {
+          lst.clear();
           cout << "Список очищен.\n";
-        break;
-      } else if (enter == "N" || enter == "n") {
-         cout << "Список будет дополнен.\n";
-        break;
-      } else {
-        cout << "Повторите ввод:\n";
-      }
+          break;
+        } else if (enter == "N" || enter == "n") {
+          cout << "Список будет дополнен.\n";
+          break;
+        } else {
+          cout << "Повторите ввод:\n";
+        }
       }
     }
     do {
@@ -78,7 +78,8 @@ int menu() {
     std::ofstream fout(file);
     PeopleData *ptr = lst.head;
     while (ptr != NULL) {
-      fout << ptr->fio << ';'<< ptr->post << ';' << ptr->address << ';' << '\n';
+      fout << ptr->fio << ';' << ptr->post << ';' << ptr->address << ';'
+           << '\n';
       ptr = ptr->next;
     }
     fout.close();
@@ -86,15 +87,28 @@ int menu() {
   } else if (command == "3") {
 
     cout << "Вводите данные(Пробел - закончить):\n";
-    string file, enter;
-    getline(cin, file);
-    std::ifstream fin(file);
+    string enter;
+    if (lst.head != NULL) {
+      cout << "Список не пуст хотите её отчистить(Y/N):\n";
+      while (true) {
+        getline(cin, enter);
+        if (enter == "Y" || enter == "y") {
+          lst.clear();
+          cout << "Список очищен.\n";
+          break;
+        } else if (enter == "N" || enter == "n") {
+          cout << "Список будет дополнен.\n";
+          break;
+        } else {
+          cout << "Повторите ввод:\n";
+        }
+      }
+    }
     do {
       getline(cin, enter);
       if (enter != "")
         lst.push_back(enter);
     } while (enter != "");
-    fin.close();
 
   } else if (command == "4") {
     cout << "Вы уверены(Y/N):\n";
@@ -114,16 +128,16 @@ int menu() {
   } else if (command == "5") {
 
     cout << "Введите номер куда вы хотите добавить данные:\n";
-    string enter,data;
-    
+    string enter, data;
+
     getline(cin, enter);
     int index = uint_read(enter);
 
     cout << "Введите данные:\n";
     getline(cin, data);
 
-    lst.insert(index,data);
-    
+    lst.insert(index, data);
+
   } else if (command == "6") {
 
     cout << "Введите номер элемента который вы хотите удалить:\n";
@@ -132,7 +146,7 @@ int menu() {
     int index = uint_read(enter);
 
     lst.earse(index);
-    
+
   } else if (command == "7") {
 
     cout << "Введите по какому элементу:\n";
@@ -140,7 +154,7 @@ int menu() {
     getline(cin, enter);
     int index = uint_read(enter);
     cout << "\n";
-    if(index>=0){
+    if (index >= 0) {
       lst.sort(index);
       cout << "Список отсортирован.\n";
     }
@@ -148,14 +162,14 @@ int menu() {
 
     PeopleData *ptr = lst.head;
 
-    if(ptr==NULL){
+    if (ptr == NULL) {
       cout << "Список пуст.\n";
     }
-    
-    while(ptr!=NULL){
-    cout<<ptr->fio<<", "<<ptr->post<<", "<<ptr->address<<'\n';
-    ptr = ptr->next;
-  }
+
+    while (ptr != NULL) {
+      cout << ptr->fio << ", " << ptr->post << ", " << ptr->address << '\n';
+      ptr = ptr->next;
+    }
 
   } else if (command == "9") {
 
@@ -163,12 +177,12 @@ int menu() {
     string enter;
     getline(cin, enter);
     int index = uint_read(enter);
-
+    cout << "\n";
     PeopleData *ptr = lst.getAt(index);
-    if(ptr==NULL){
+    if (ptr == NULL) {
       cout << "Элемент пуст.\n";
-    }else{
-      cout<<ptr->fio<<", "<<ptr->post<<", "<<ptr->address<<'\n';
+    } else {
+      cout << ptr->fio << ", " << ptr->post << ", " << ptr->address << '\n';
     }
   } else if (command == "10") {
 
@@ -186,7 +200,7 @@ int menu() {
         cout << "Повторите ввод:\n";
       }
     }
-    
+
   } else {
     cout << "Неверная команда\n";
   }
